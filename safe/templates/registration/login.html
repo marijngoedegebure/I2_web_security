@@ -1,0 +1,14 @@
+<h2>Inloggen</h2>
+{% if form.errors %}
+    <p>Uw inloggegevens waren incorrect, probeer het nogmaals.</p>
+{% endif %}
+
+<form class="horizontalForm loginForm" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+    {% csrf_token %}
+    {{ form.username.label_tag }}
+    {{ form.username }}
+    {{ form.password.label_tag }}
+    {{ form.password }}
+    <button type="submit">Login</button>
+    <input type="hidden" name="next" value="{{ complain }}"/>
+</form>
