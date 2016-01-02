@@ -6,4 +6,29 @@
     {% else %}
         <a href="{% url 'safe_login' %}">Login</a><br>
     {% endif %}
+    <br>
+
+    <h2>Voorgaande berichten:</h2>
+    {% for message in messages %}
+        <h3>{{ message.user.username }}</h3>
+        <p>{{ message.text }}</p>
+        {% if user.is_staff %}
+            <a href="{% url 'safe_delete' pk=message.pk %}">Delete this message.</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+    <h2>Verstuur een bericht</h2>
+    {% if form.errors %}
+        <p>Vul een valide bericht in</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'safe_home' %}">
+        {% csrf_token %}
+        {{ form.text.label_tag }}
+        {{ form.text }}
+        <button type="submit">Verstuur</button>
+    </form>
+    {% endif %}
+
 {% endblock %}
