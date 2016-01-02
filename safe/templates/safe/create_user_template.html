@@ -1,8 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
 <h2>Create new user</h2>
-<form method="post" action="{% url 'create' %}">
+<form method="post" action="{% url 'safe_create' %}">
       {% csrf_token %}
       <ul>
           {{ form.as_ul }}
       </ul>
       <button type="submit">Versturen</button>
 </form>
+{% endblock %}

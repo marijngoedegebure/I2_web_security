@@ -6,5 +6,5 @@ from django.views.generic import FormView, CreateView
 
 
 class CreateUserView(CreateView):
-    template_name = 'create_user_template.html'
+    template_name = 'safe/create_user_template.html'
     form_class = UserCreationForm

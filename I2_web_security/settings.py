@@ -12,8 +12,11 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+from django.core.urlresolvers import reverse
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+IN_BASE_DIR = lambda x: os.path.join(BASE_DIR, x)
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -59,7 +62,7 @@ ROOT_URLCONF = 'I2_web_security.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [IN_BASE_DIR('templates'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -104,3 +107,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOCALE_PATHS = [IN_BASE_DIR('../locale/')]
+
+LOGIN_REDIRECT_URL = '/safe/login_success/'
