@@ -112,7 +112,7 @@ LOCALE_PATHS = [IN_BASE_DIR('../locale/')]
 
 LOGIN_REDIRECT_URL = '/unsafe/login_success/'
 
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+AUTHENTICATION_BACKENDS = ['unsafe.auth_backend.UnsafeAuthBackend']
 
 # First is default
 AUTH_USER_MODEL = 'auth.User'
