@@ -3,6 +3,7 @@
 {% block content %}
     <a href="{% url 'safe_create' %}">Create new user</a><br>
     {% if user.is_authenticated %}
+        <h2>Hello {{ user.username }}</h2>
         <a href="{% url 'safe_logout' %}">Logout</a><br>
     {% else %}
         <a href="{% url 'safe_login' %}">Login</a><br>
