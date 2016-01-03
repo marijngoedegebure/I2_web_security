@@ -5,7 +5,7 @@
     <p>Uw inloggegevens waren incorrect, probeer het nogmaals.</p>
 {% endif %}
 
-<form class="horizontalForm loginForm" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+<form class="horizontalForm loginForm" method="post" action="{% url 'unsafe_login' %}">
     {% csrf_token %}
     {{ form.username.label_tag }}
     {{ form.username }}
