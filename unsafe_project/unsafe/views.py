@@ -8,7 +8,8 @@ from django.views.generic import CreateView, DeleteView, FormView
 from message_module.models import Message
 from unsafe.forms import UnSafeMessageForm, UnsafeUserCreateForm
 from unsafe.models import UnsafeUser
-
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 class CreateUnSafeMessageView(CreateView):
     template_name = 'unsafe/home.html'
@@ -24,6 +25,10 @@ class CreateUnSafeMessageView(CreateView):
         message.user = User.objects.get(id=self.request.user.id)  # use your own profile here
         message.save()
         return redirect('unsafe_home')
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CreateView, self).dispatch(request, *args, **kwargs)
 
 def delete_message_unsafe(request, pk):
     message = Message.objects.get(pk=pk)
@@ -45,6 +50,10 @@ class CreateUnsafeUserView(FormView):
         unsafe_user = UnsafeUser.objects.create(user=user, plaintext_password=cleaned_data['plaintext_password'])
         unsafe_user.save()
         return redirect('unsafe_home')
+
+def csrf(request):
+    return render(request, 'unsafe/csrf.html');
+
 
 # class LoginFormView(FormView):
 #     template_name = 'unsafe/login.html'
