@@ -19,7 +19,6 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     url(r'^safe/', include('safe.urls')),
-    url(r'^unsafe/', include('unsafe.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', TemplateView.as_view(template_name="home.html"), name='home'),
 ]
