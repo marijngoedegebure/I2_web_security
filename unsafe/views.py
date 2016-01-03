@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render_to_response, render
 from django.template import RequestContext
 from django.views.generic import CreateView, DeleteView, FormView
 from message_module.models import Message
-from unsafe.forms import UnSafeMessageForm, UnSafeUserForm
+from unsafe.forms import UnSafeMessageForm, UnsafeUserCreateForm
 from unsafe.models import UnsafeUser
 
 
@@ -30,26 +30,30 @@ def delete_message_unsafe(request, pk):
     message.delete()
     return redirect('unsafe_home')
 
-class CreateUnsafeUserView(CreateView):
+class CreateUnsafeUserView(FormView):
     template_name = 'unsafe/create_user_template.html'
-    form_class = UnSafeUserForm
+    form_class = UnsafeUserCreateForm
 
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
-        user = form.save(commit=False)
+        cleaned_data = form.cleaned_data
+        user = User.objects.create_user(cleaned_data['username'], '', cleaned_data['plaintext_password'])
         if len(UnsafeUser.objects.all()) < 1:
-            user.is_admin = True
+            user.is_staff = True
         user.save()
+        unsafe_user = UnsafeUser.objects.create(user=user, plaintext_password=cleaned_data['plaintext_password'])
+        unsafe_user.save()
         return redirect('unsafe_home')
 
-class LoginFormView(FormView):
-    template_name = 'unsafe/login.html'
-    form_class = UnSafeUserForm
-
-    def form_valid(self, form):
-        unsafe_user = form.save(commit=False)
-        if UnsafeUser.objects.get(username=unsafe_user.username, password=unsafe_user.password):
-            return render(self.request, 'unsafe/login_success.html', context={"unsafe_user": unsafe_user})
-        else:
-            return redirect('unsafe_login')
+# class LoginFormView(FormView):
+#     template_name = 'unsafe/login.html'
+#     form_class = UnSafeUserForm
+#
+#     def form_valid(self, form):
+#         unsafe_user = form.save(commit=False)
+#         if UnsafeUser.objects.get(username=unsafe_user.username, password=unsafe_user.password):
+#             self.request.unsafe_user = unsafe_user
+#             return render(self.request, 'unsafe/login_success.html', context_instance=RequestContext(self.request))
+#         else:
+#             return redirect('unsafe_login')

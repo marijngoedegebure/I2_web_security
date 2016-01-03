@@ -2,8 +2,9 @@
 {% load unsafe_tags %}
 {% block content %}
     <a href="{% url 'unsafe_create' %}">Create new user</a><br>
-    {% if user.is_authenticated %}
-        <h2>Hello {{ user.username|safe }}</h2>
+    <p>{{ unsafe_user.username }}</p>
+    {% if unsafe_user %}
+        <h2>Hello {{ unsafe_user.username|safe }}</h2>
         <a href="{% url 'unsafe_logout' %}">Logout</a><br>
     {% else %}
         <a href="{% url 'unsafe_login' %}">Login</a><br>
@@ -14,12 +15,12 @@
     {% for message in messages %}
         <h3>{{ message.user.username }}</h3>
         <p>{{ message.text|markdownify|safe }}</p>
-        {% if user.is_staff %}
+        {% if unsafe_user.is_admin %}
             <a href="{% url 'unsafe_delete' pk=message.pk %}">Delete this message.</a>
         {% endif %}
     {% endfor %}
 
-    {% if user.is_authenticated %}
+    {% if unsafe_user %}
     <h2>Verstuur een bericht</h2>
     {% if form.errors %}
         <p>Vul een valide bericht in</p>

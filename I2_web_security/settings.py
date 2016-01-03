@@ -111,4 +111,10 @@ STATIC_URL = '/static/'
 
 LOCALE_PATHS = [IN_BASE_DIR('../locale/')]
 
-LOGIN_REDIRECT_URL = '/safe/login_success/'
+LOGIN_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+
+# First is default
+AUTH_USER_MODEL = 'auth.User'
+# AUTH_USER_MODEL = 'unsafe.UnsafeUser'

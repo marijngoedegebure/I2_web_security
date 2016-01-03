@@ -1,3 +1,4 @@
+from django import forms
 from django.forms import ModelForm
 from message_module.models import Message
 from unsafe.models import UnsafeUser
@@ -10,8 +11,6 @@ class UnSafeMessageForm(ModelForm):
         fields = ['text']
 
 
-class UnSafeUserForm(ModelForm):
-
-    class Meta:
-        model = UnsafeUser
-        fields = ['username', 'password', 'is_admin']
+class UnsafeUserCreateForm(forms.Form):
+    username = forms.CharField(label='Username', max_length=100)
+    plaintext_password = forms.CharField(label='Password', max_length=100)

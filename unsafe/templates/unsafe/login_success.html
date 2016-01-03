@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
     <h2>Successful login!</h2>
+    <p>{{ unsafe_user.username }}</p>
     <a href="{% url 'unsafe_home' %}">Home</a>
 {% endblock %}
