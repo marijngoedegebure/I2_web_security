@@ -38,7 +38,7 @@ class CreateUnsafeUserView(FormView):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
         cleaned_data = form.cleaned_data
-        user = User.objects.create_user(cleaned_data['username'], '', cleaned_data['plaintext_password'])
+        user = User.objects.create_user(cleaned_data['username'], '', '')
         if len(UnsafeUser.objects.all()) < 1:
             user.is_staff = True
         user.save()
