@@ -42,10 +42,14 @@ class CreateUnsafeUserView(FormView):
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
-        cleaned_data = form.cleaned_data
+        cleaned_data = form.data
         user = User.objects.create_user(cleaned_data['username'], '', '')
+
         if len(UnsafeUser.objects.all()) < 1:
             user.is_staff = True
+        if 'is_staff' in cleaned_data.keys():
+            if cleaned_data['is_staff'] == 'on':
+                user.is_staff = True
         user.save()
         unsafe_user = UnsafeUser.objects.create(user=user, plaintext_password=cleaned_data['plaintext_password'])
         unsafe_user.save()
@@ -53,16 +57,3 @@ class CreateUnsafeUserView(FormView):
 
 def csrf(request):
     return render(request, 'unsafe/csrf.html');
-
-
-# class LoginFormView(FormView):
-#     template_name = 'unsafe/login.html'
-#     form_class = UnSafeUserForm
-#
-#     def form_valid(self, form):
-#         unsafe_user = form.save(commit=False)
-#         if UnsafeUser.objects.get(username=unsafe_user.username, password=unsafe_user.password):
-#             self.request.unsafe_user = unsafe_user
-#             return render(self.request, 'unsafe/login_success.html', context_instance=RequestContext(self.request))
-#         else:
-#             return redirect('unsafe_login')
