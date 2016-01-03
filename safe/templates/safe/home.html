@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load safe_tags %}
 {% block content %}
     <a href="{% url 'safe_create' %}">Create new user</a><br>
     {% if user.is_authenticated %}
@@ -11,7 +12,7 @@
     <h2>Voorgaande berichten:</h2>
     {% for message in messages %}
         <h3>{{ message.user.username }}</h3>
-        <p>{{ message.text }}</p>
+        <p>{{ message.text|markdownify|safe }}</p>
         {% if user.is_staff %}
             <a href="{% url 'safe_delete' pk=message.pk %}">Delete this message.</a>
         {% endif %}
